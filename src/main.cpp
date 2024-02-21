@@ -4,7 +4,7 @@
 
 // include the libraries
 #include <Arduino.h>
-#include <Ultrasonic.h>
+// #include <Ultrasonic.h>
 #include <ESP32Servo.h>
 #include <WiFi.h>
 #include <WiFiClient.h>
@@ -12,8 +12,8 @@
 
 // define the pins for the motor driver
 #define LED 2
-#define IR_R 36
-#define IR_L 39
+// #define IR_R 36
+// #define IR_L 39
 #define LeftForward 19
 #define LeftBackward 18
 #define RightForward 5
@@ -23,10 +23,10 @@
 Servo servo;
 
 // create an Ultrasonic object
-Ultrasonic ultrasonic(16);
+// Ultrasonic ultrasonic(16);
 
 // variable to store the range in cm
-long RangeInCentimeters, leftDistance, rightDistance;
+int RangeInCentimeters, leftDistance, rightDistance, IR_R, IR_L;
 
 // 0 is manual mode, 1 is auto mode
 int mode = 0;
@@ -42,8 +42,8 @@ int x = 50;
 int y = 50;
 
 // Your WiFi credentials.
-char ssid[] = "ติ๊งต่าง";
-char pass[] = "12345678";
+char ssid[] = "apkmew";
+char pass[] = "6410500360";
 
 // move functions
 void moveForward();
@@ -62,11 +62,30 @@ BLYNK_WRITE(V0) // change mode
     mode = param.asInt();
 }
 
+// Get the ultrasonic values from the Blynk app
+BLYNK_WRITE(V5) 
+{
+    RangeInCentimeters = param.asInt();
+}
+
+// Get the IR Left values from the Blynk app
+BLYNK_WRITE(V6) 
+{
+    IR_L = param.asInt();
+}
+
+// Get the IR Right values from the Blynk app
+BLYNK_WRITE(V7) 
+{
+    IR_R = param.asInt();
+}
+
 // Get the joystick values x
 BLYNK_WRITE(V8)
 {
     x = param[0].asInt();
 }
+
 // Get the joystick values y
 BLYNK_WRITE(V9)
 {
@@ -92,8 +111,8 @@ void setup()
     pinMode(LeftBackward, OUTPUT);                                       // Left Backward
     pinMode(RightForward, OUTPUT);                                       // Right Forward
     pinMode(RightBackward, OUTPUT);                                      // Right Backward
-    pinMode(IR_R, INPUT);                                                // IR Right
-    pinMode(IR_L, INPUT);                                                // IR Left
+    // pinMode(IR_R, INPUT);                                                // IR Right
+    // pinMode(IR_L, INPUT);                                                // IR Left
     servo.attach(21);                                                    // Servo Pin
     servo.write(90);                                                     // Servo Initial Position
     stop();                                                              // Stop the car
@@ -102,14 +121,14 @@ void setup()
 void loop()
 {
     Blynk.run();                            // Blynk
-    RangeInCentimeters = ultrasonic.read(); // get the range from the sensor
+    // RangeInCentimeters = ultrasonic.read(); // get the range from the sensor
 
-    Blynk.virtualWrite(V5, RangeInCentimeters); // send the range to the Blynk app
-    Blynk.virtualWrite(V6, digitalRead(IR_L));  // send the IR Right to the Blynk app
-    Blynk.virtualWrite(V7, digitalRead(IR_R));  // send the IR Left to the Blynk app
+    // Blynk.virtualWrite(V5, RangeInCentimeters); // send the range to the Blynk app
+    // Blynk.virtualWrite(V6, digitalRead(IR_L));  // send the IR Right to the Blynk app
+    // Blynk.virtualWrite(V7, digitalRead(IR_R));  // send the IR Left to the Blynk app
 
     WidgetLED led1(V10); // IR Left LED
-    if (digitalRead(IR_L) == 0)
+    if (IR_L == 0)
     {
         led1.on();
     }
@@ -119,7 +138,7 @@ void loop()
     }
 
     WidgetLED led2(V11); // IR Right LED
-    if (digitalRead(IR_R) == 0)
+    if (IR_R == 0)
     {
         led2.on();
     }
@@ -189,12 +208,12 @@ void changePath() // change path if there is an obstacle
 
     servo.write(35); // check distance to the right
     delay(500);
-    rightDistance = ultrasonic.read(); // set right distance
+    rightDistance = RangeInCentimeters; // set right distance
     delay(500);
 
     servo.write(145); // check distance to the left
     delay(500);
-    leftDistance = ultrasonic.read(); // set left distance
+    leftDistance = RangeInCentimeters; // set left distance
     delay(500);
 
     servo.write(90); // return to center
@@ -224,7 +243,7 @@ void compareDistance() // find the less obstructed path
 
 void autoCar() // auto mode
 {
-    if ((RangeInCentimeters < 15) || (digitalRead(IR_R) == 0) || (digitalRead(IR_L) == 0))
+    if ((RangeInCentimeters < 30) || (digitalRead(IR_R) == 0) || (digitalRead(IR_L) == 0))
     {
         changePath();
     }
