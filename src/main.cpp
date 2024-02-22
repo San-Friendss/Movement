@@ -1,5 +1,6 @@
 // Blynk App
 #define BLYNK_AUTH_TOKEN "l4chGUuJL7Yso2jt3yPCQ377vewUzICt"
+#define BLYNK_AUTH_TOKEN_OLED "nNcNxAOxQ35qNH5xYhsk2_bwIDnif8Nx"
 #define BLYNK_PRINT Serial
 
 // include the libraries
@@ -45,6 +46,8 @@ int y = 50;
 char ssid[] = "apkmew";
 char pass[] = "6410500360";
 
+WidgetBridge bridge(V0);
+
 // move functions
 void moveForward();
 void moveBackward();
@@ -60,6 +63,7 @@ void autoCar();
 BLYNK_WRITE(V0) // change mode
 {
     mode = param.asInt();
+    bridge.virtualWrite(V0, mode);
 }
 
 // Get the ultrasonic values from the Blynk app
@@ -99,6 +103,7 @@ BLYNK_CONNECTED()
     Blynk.setProperty(V3, "offImageUrl", "https://static-image.nyc3.cdn.digitaloceanspaces.com/general/fte/congratulations.png");
     Blynk.setProperty(V3, "onImageUrl", "https://static-image.nyc3.cdn.digitaloceanspaces.com/general/fte/congratulations_pressed.png");
     Blynk.setProperty(V3, "url", "https://docs.blynk.io/en/getting-started/what-do-i-need-to-blynk/how-quickstart-device-was-made");
+    bridge.setAuthToken(BLYNK_AUTH_TOKEN_OLED);
     digitalWrite(LED, HIGH);
 }
 
@@ -227,23 +232,23 @@ void compareDistance() // find the less obstructed path
     if (leftDistance > rightDistance) // left is less obstructed
     {
         turnLeft();
-        delay(700);
+        delay(100);
     }
     else if (rightDistance > leftDistance) // right is less obstructed
     {
         turnRight();
-        delay(600);
+        delay(100);
     }
-    else // if both distances are equal
+    else // if bot distances are equal
     {
         turnRight();
-        delay(800);
+        delay(300);
     }
 }
 
 void autoCar() // auto mode
 {
-    if ((RangeInCentimeters < 30) || (digitalRead(IR_R) == 0) || (digitalRead(IR_L) == 0))
+    if ((RangeInCentimeters < 45) || (digitalRead(IR_R) == 0) || (digitalRead(IR_L) == 0))
     {
         changePath();
     }
