@@ -248,9 +248,10 @@ void compareDistance() // find the less obstructed path
 
 void autoCar() // auto mode
 {
-    if ((RangeInCentimeters < 45) || (digitalRead(IR_R) == 0) || (digitalRead(IR_L) == 0))
+    if ((RangeInCentimeters < 30) || (digitalRead(IR_R) == 0) || (digitalRead(IR_L) == 0))
     {
         changePath();
+        delay(500);
     }
     else
     {
