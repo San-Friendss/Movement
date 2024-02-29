@@ -1,6 +1,6 @@
 // Blynk App
 #define BLYNK_AUTH_TOKEN "l4chGUuJL7Yso2jt3yPCQ377vewUzICt"
-#define BLYNK_AUTH_TOKEN_OLED "nNcNxAOxQ35qNH5xYhsk2_bwIDnif8Nx"
+#define BLYNK_AUTH_TOKEN_WATER_PUMP "0BVxluy8unor3WZHVLYNys90EzRM5IZi"
 #define BLYNK_PRINT Serial
 
 // include the libraries
@@ -63,7 +63,7 @@ void autoCar();
 BLYNK_WRITE(V0) // change mode
 {
     mode = param.asInt();
-    bridge.virtualWrite(V0, mode);
+    bridge.virtualWrite(V2, mode);
 }
 
 // Get the ultrasonic values from the Blynk app
@@ -103,7 +103,7 @@ BLYNK_CONNECTED()
     Blynk.setProperty(V3, "offImageUrl", "https://static-image.nyc3.cdn.digitaloceanspaces.com/general/fte/congratulations.png");
     Blynk.setProperty(V3, "onImageUrl", "https://static-image.nyc3.cdn.digitaloceanspaces.com/general/fte/congratulations_pressed.png");
     Blynk.setProperty(V3, "url", "https://docs.blynk.io/en/getting-started/what-do-i-need-to-blynk/how-quickstart-device-was-made");
-    bridge.setAuthToken(BLYNK_AUTH_TOKEN_OLED);
+    bridge.setAuthToken(BLYNK_AUTH_TOKEN_WATER_PUMP);
     digitalWrite(LED, HIGH);
 }
 
@@ -131,26 +131,6 @@ void loop()
     // Blynk.virtualWrite(V5, RangeInCentimeters); // send the range to the Blynk app
     // Blynk.virtualWrite(V6, digitalRead(IR_L));  // send the IR Right to the Blynk app
     // Blynk.virtualWrite(V7, digitalRead(IR_R));  // send the IR Left to the Blynk app
-
-    WidgetLED led1(V10); // IR Left LED
-    if (IR_L == 0)
-    {
-        led1.on();
-    }
-    else
-    {
-        led1.off();
-    }
-
-    WidgetLED led2(V11); // IR Right LED
-    if (IR_R == 0)
-    {
-        led2.on();
-    }
-    else
-    {
-        led2.off();
-    }
 
     if (mode == 1) // auto mode
     {
