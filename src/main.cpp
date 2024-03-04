@@ -5,7 +5,6 @@
 
 // include the libraries
 #include <Arduino.h>
-// #include <Ultrasonic.h>
 #include <ESP32Servo.h>
 #include <WiFi.h>
 #include <WiFiClient.h>
@@ -13,8 +12,6 @@
 
 // define the pins for the motor driver
 #define LED 2
-// #define IR_R 36
-// #define IR_L 39
 #define LeftForward 19
 #define LeftBackward 18
 #define RightForward 5
@@ -22,9 +19,6 @@
 
 // create servo object to control a servo
 Servo servo;
-
-// create an Ultrasonic object
-// Ultrasonic ultrasonic(16);
 
 // variable to store the range in cm
 int RangeInCentimeters, leftDistance, rightDistance, IR_R, IR_L;
@@ -116,8 +110,6 @@ void setup()
     pinMode(LeftBackward, OUTPUT);                                       // Left Backward
     pinMode(RightForward, OUTPUT);                                       // Right Forward
     pinMode(RightBackward, OUTPUT);                                      // Right Backward
-    // pinMode(IR_R, INPUT);                                                // IR Right
-    // pinMode(IR_L, INPUT);                                                // IR Left
     servo.attach(21);                                                    // Servo Pin
     servo.write(90);                                                     // Servo Initial Position
     stop();                                                              // Stop the car
@@ -126,12 +118,6 @@ void setup()
 void loop()
 {
     Blynk.run();                            // Blynk
-    // RangeInCentimeters = ultrasonic.read(); // get the range from the sensor
-
-    // Blynk.virtualWrite(V5, RangeInCentimeters); // send the range to the Blynk app
-    // Blynk.virtualWrite(V6, digitalRead(IR_L));  // send the IR Right to the Blynk app
-    // Blynk.virtualWrite(V7, digitalRead(IR_R));  // send the IR Left to the Blynk app
-
     if (mode == 1) // auto mode
     {
         autoCar();
