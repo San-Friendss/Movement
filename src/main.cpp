@@ -130,42 +130,42 @@ void loop()
 
 void stop()
 {
-    digitalWrite(19, LOW);
-    digitalWrite(18, LOW);
-    digitalWrite(5, LOW);
-    digitalWrite(17, LOW);
+    digitalWrite(19, LOW); // Left Forward
+    digitalWrite(18, LOW); // Left Backward
+    digitalWrite(5, LOW); // Right Forward
+    digitalWrite(17, LOW); // Right Backward
 }
 
 void moveForward()
 {
-    digitalWrite(19, HIGH);
-    digitalWrite(18, LOW);
-    digitalWrite(5, HIGH);
-    digitalWrite(17, LOW);
+    digitalWrite(19, LOW); // L Backward
+    digitalWrite(18, HIGH); // L Forward 
+    digitalWrite(5, HIGH); // R Forward
+    digitalWrite(17, LOW); // R Backward
 }
 
 void moveBackward()
 {
-    digitalWrite(19, LOW);
-    digitalWrite(18, HIGH);
-    digitalWrite(5, LOW);
-    digitalWrite(17, HIGH);
+    digitalWrite(19, HIGH); // L Backward
+    digitalWrite(18, LOW); // L Forward 
+    digitalWrite(5, LOW); // R Forward
+    digitalWrite(17, HIGH); // R Backward
 }
 
 void turnLeft()
 {
-    digitalWrite(19, LOW);
-    digitalWrite(18, LOW);
-    digitalWrite(5, HIGH);
-    digitalWrite(17, LOW);
+    digitalWrite(19, LOW); // L Backward
+    digitalWrite(18, LOW); // L Forward 
+    digitalWrite(5, HIGH); // R Forward
+    digitalWrite(17, LOW); // R Backward
 }
 
 void turnRight()
 {
-    digitalWrite(19, HIGH);
-    digitalWrite(18, LOW);
-    digitalWrite(5, LOW);
-    digitalWrite(17, LOW);
+    digitalWrite(19, LOW); // L Backward
+    digitalWrite(18, HIGH); // L Forward 
+    digitalWrite(5, LOW); // R Forward
+    digitalWrite(17, LOW); // R Backward
 }
 
 void changePath() // change path if there is an obstacle
@@ -173,7 +173,7 @@ void changePath() // change path if there is an obstacle
     stop();
     delay(250);
     moveBackward();
-    delay(500);
+    delay(800);
     stop();
     delay(250);
 
